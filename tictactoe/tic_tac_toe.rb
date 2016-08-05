@@ -9,7 +9,7 @@ class Board
 
 	def initialize
 		@status = {}
-		1.upto(9) { |n| @status[n.to_s.to_sym] = " " }
+		self.clear
 	end
 
 	def draw
@@ -23,6 +23,10 @@ class Board
 	def new_move(position, sign)
 		@status[position] = sign
 		self.draw
+	end
+
+	def clear
+		1.upto(9) { |n| @status[n.to_s.to_sym] = " " }
 	end
 
 end

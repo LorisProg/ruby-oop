@@ -16,16 +16,13 @@ class TicTacToeGame
 		@player1 = create_player("Player 1")
 		@player2 = create_player("Player 2")
 		@winner = ""
-		
-		system('clear')
 
-		play
 	end
 
 	public
 
 	def play
-			
+		system('clear')
 		player1_to_play = true
 		player2_to_play = false
 			
@@ -127,7 +124,6 @@ class TicTacToeGame
 		@board.clear
 		@player1.clear
 		@player2.clear
-		system('clear')
 		play
 	end
 

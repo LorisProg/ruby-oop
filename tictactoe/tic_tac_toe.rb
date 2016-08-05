@@ -21,7 +21,6 @@ class Board
 
 	def new_move(position, sign)
 		@status[position] = sign
-		self.draw
 	end
 
 	def clear
@@ -85,7 +84,9 @@ class TicTacToeGame
 		@player2 = create_player("Player 2")
 		@winner = ""
 		
-		self.play
+		system('clear')
+
+		play
 	end
 
 	public
@@ -103,7 +104,10 @@ class TicTacToeGame
 			@player2.move if player2_to_play
 				
 			player1_to_play, player2_to_play = player2_to_play, player1_to_play
-			
+
+			system('clear')
+			@board.draw
+
 		end
 
 		end_of_game
@@ -186,6 +190,7 @@ class TicTacToeGame
 		@board.clear
 		@player1.clear
 		@player2.clear
+		system('clear')
 		play
 	end
 
@@ -193,4 +198,5 @@ end
 
 
 #Start the game
+system('clear')
 TicTacToeGame.new

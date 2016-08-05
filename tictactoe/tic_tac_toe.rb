@@ -1,7 +1,7 @@
 # Tic Tac Toe for The Odin Project
 
 #for debugging
-require "pry"
+#require "pry"
 
 
 

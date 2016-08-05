@@ -50,13 +50,14 @@ class Player
 
 		while !correct_move
 			move = gets.chomp
-			if (move.split & @@all_positions).size == 0
+			if (move.split & @@all_positions).size == 0 && move.to_i.between?(1,9)
 				@board.new_move(move.to_sym, @sign)
 				@positions << move.to_i
 				@@all_positions << move.to_s
 				correct_move = true
 			else
-				puts "This position is already taken !"
+				puts "This position is already taken !" if (move.split & @@all_positions).size != 0
+				puts "Only a number between 1 and 9 is valid" if !move.to_i.between?(1,9)
 				puts "Please choose another move."
 			end
 		end

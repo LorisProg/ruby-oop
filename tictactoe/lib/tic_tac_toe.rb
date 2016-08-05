@@ -55,7 +55,11 @@ class TicTacToeGame
 	end
 
 	def create_player(id)
-		puts "#{id} what's your name ?"
+		if id == "Player 1"
+			puts "#{id} what's your name ?"
+		elsif id == "Player 2"
+			puts "#{id} what's your name ? (Enter Computer to play against the computer)"
+		end
 		name = gets.chomp
 		sign = ""
 		if !@sign_taken

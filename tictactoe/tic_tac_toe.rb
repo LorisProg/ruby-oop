@@ -66,6 +66,11 @@ class Player
 		@@all_positions
 	end
 
+	def clear
+		@positions = []
+		@@all_positions = []
+	end
+
 end
 
 

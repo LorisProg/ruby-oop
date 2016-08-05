@@ -107,14 +107,7 @@ class TicTacToeGame
 			
 		end
 
-		if @winner != ""
-		puts "Congratulations ! #{@winner} wins !"
-		else
-			puts "Game Over ! Nobody won ..."
-		end
-
-#		puts "Would you like to play a new game ?"
-# => next thing to implement New Game
+		end_of_game
 
 	end
 
@@ -157,6 +150,28 @@ class TicTacToeGame
 		return true if Player.all_positions.size == 9
 
 		false 
+	end
+
+	def end_of_game
+		if @winner != ""
+		puts "Congratulations ! #{@winner} wins !"
+		else
+			puts "Game Over ! Nobody won ..."
+		end
+
+		if play_again?
+			new_game
+		else
+			puts "Thank you for playing !"
+		end
+	end
+
+	def play_again?
+		false
+	end
+
+	def new_game
+
 	end
 
 end

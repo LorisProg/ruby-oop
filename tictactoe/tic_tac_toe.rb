@@ -4,7 +4,6 @@
 #require "pry"
 
 
-
 class Board
 
 	def initialize
@@ -167,11 +166,27 @@ class TicTacToeGame
 	end
 
 	def play_again?
-		false
+		puts "Would you like to play again ? (y/n)"
+		valid_answer = false
+
+		until valid_answer
+			valid_answer = gets.chomp.downcase
+			if valid_answer == "y"
+				return true
+			elsif valid_answer == "n"
+				return false
+			else
+				puts "Please answer only with y or n"
+				valid_answer = false
+			end
+		end
 	end
 
 	def new_game
-
+		@board.clear
+		@player1.clear
+		@player2.clear
+		play
 	end
 
 end

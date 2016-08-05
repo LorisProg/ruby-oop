@@ -1,6 +1,8 @@
 # Tic Tac Toe for The Odin Project
 
-# method to draw the board
+#for debugging
+require "pry"
+
 
 
 class Board
@@ -27,21 +29,37 @@ end
 
 class Player
 
-	attr_reader :positions
+	attr_reader :positions, :name
 
 	def initialize(name, sign, board)
 		@name = name
 		@sign = sign
 		@board = board
 		@positions = []
+		@@all_positions = []
 	end
 
 	def move
 		puts "It's your turn #{@name}, please enter your next move :"
 		puts "(number from 1 to 9)"
-		move = gets.chomp
-		@board.new_move(move.to_s.to_sym, @sign)
-		@positions << move
+		correct_move = false
+
+		while !correct_move
+			move = gets.chomp
+			if (move.split & @@all_positions).size == 0
+				@board.new_move(move.to_sym, @sign)
+				@positions << move.to_i
+				@@all_positions << move.to_s
+				correct_move = true
+			else
+				puts "This position is already taken !"
+				puts "Please choose another move."
+			end
+		end
+	end
+
+	def self.all_positions
+		@@all_positions
 	end
 
 end
@@ -50,23 +68,14 @@ end
 class TicTacToeGame
 
 	def initialize
-		puts "Welcome to Tic Tac Toe written in Ruby !"
-		puts ""
-		puts "Player 1 what's your name ?"
-		@player1_name = gets.chomp
-		puts "You get to choose your symbol! What do you prefer ? ( X or O )"
-		@player1_sign = gets.chomp
-		puts "Player 2 what's your name ?"
-		@player2_name = gets.chomp
-		puts "You get to choose your symbol! What do you prefer ? ( X or O )"
-		@player2_sign = gets.chomp
-#beta version
-		playing_board = Board.new
-		@board = playing_board
-		player1 = Player.new(@player1_name, @player1_sign, @board)
-		player2 = Player.new(@player2_name, @player2_sign, @board)
-		@player1 = player1
-		@player2 = player2
+		@board = Board.new
+		
+		welcome
+
+		@player1 = create_player("Player 1")
+		@player2 = create_player("Player 2")
+		@winner = ""
+		
 		self.play
 	end
 
@@ -88,19 +97,60 @@ class TicTacToeGame
 			
 		end
 
+		if @winner != ""
+		puts "Congratulations ! #{@winner} wins !"
+		else
+			puts "Game Over ! Nobody won ..."
+		end
+
+#		puts "Would you like to play a new game ?"
+# => next thing to implement New Game
+
 	end
 
 	private
+
+	def welcome
+		puts "Welcome to Tic Tac Toe written in Ruby !"
+		puts ""
+	end
+
+	def create_player(id)
+		puts "#{id} what's your name ?"
+		name = gets.chomp
+		sign = ""
+		if !@sign_taken
+			puts "You get to choose your symbol! What do you prefer ? ( X or O )"
+			while sign != "X" && sign != "O"
+				sign = gets.chomp.upcase
+				@sign_taken = sign
+				puts "Wrong symbol, please only select X or O" if sign != "X" && sign != "O"
+			end
+		else
+			sign = "X" if @sign_taken == "O"
+			sign = "O" if @sign_taken == "X"
+		end
+		Player.new(name, sign, @board)
+	end
 
 	def game_over?
 		winning_positions = [[1,2,3],[4,5,6],[7,8,9],[1,4,7],[2,5,8],[3,6,9],[1,5,9],[3,5,7]]
 		
 		winning_positions.each do |win| 
 			if (win & @player1.positions).size == 3 || (win & @player2.positions).size == 3 
+				@winner = @player1.name if (win & @player1.positions).size == 3
+				@winner = @player2.name if (win & @player2.positions).size == 3
 				return true
 			end
 		end
+
+		return true if Player.all_positions.size == 9
+
 		false 
 	end
 
 end
+
+
+#Start the game
+TicTacToeGame.new

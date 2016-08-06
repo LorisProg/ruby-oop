@@ -87,7 +87,7 @@ def generate_code
 end
 
 def random_digit
-	rand(@@possible_digits)
+	rand(1..6)
 end
 
 

@@ -56,7 +56,7 @@ def instructions
 
 end
 
-private
+# private
 
 def ready_play?
 	yes_no?("Are you ready to play ? (y/n)")

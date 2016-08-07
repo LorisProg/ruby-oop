@@ -12,6 +12,8 @@ class Board
 		@secret_code = nil
 		@mastermind = mastermind
 		@guess_set = generate_pool
+		@computer_wins = 0		## used to testing AI
+		@sum_computer_tries = 0  ## used to test AI
 	end
 
 	def play(secret_code, ai=false)
@@ -24,6 +26,7 @@ class Board
 				get_guess
 			end
 		end
+		return @computer_wins, @sum_computer_tries
 	end
 
 #	private
@@ -114,6 +117,8 @@ class Board
 		if @current_guess == @secret_code
 			draw(true)
 			puts "Congratulations you won !"
+			@computer_wins += 1
+			@sum_computer_tries += 12 - @guess_left
 			return true 
 		end
 

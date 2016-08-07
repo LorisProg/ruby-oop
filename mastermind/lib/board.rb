@@ -58,7 +58,7 @@ class Board
 
 	def get_guess
 		puts "What's your guess ?"
-		puts "(write each digit separated by commas like this : 2, 5, 3, 2 )"
+		puts "(write the 4 digits next to each other like this : 2532 )"
 		guess = gets.chomp
 		guess = to_code(guess)
 
@@ -78,7 +78,7 @@ class Board
 
 	def to_code(string)
 		code = []
-		string = string.split(",")
+		string = string.split("")
 		string.each do |item|
 			begin
 				code << item.to_i

@@ -1,4 +1,4 @@
-require "pry"
+#require "pry"
 require './mastermind'
 
 class Board
@@ -36,8 +36,8 @@ class Board
 		puts ""
 		puts "      You have #{@guess_left} guesses left"
 
-		puts "Debug :"
-		puts "Secret Code = #{@secret_code}"
+#		puts "Debug :"
+#		puts "Secret Code = #{@secret_code}"
 
 		
 		if @all_guesses.size > 0
@@ -116,27 +116,26 @@ class Board
 		end
 	end
 
-	def get_feedback(guess)
-		feedback = []
-		good_position = []
-		good_digit = []
-		remaining = []
-		secret_copy = @secret_code.dup
 
-		guess.size.times do |n|
-			if guess[n] == @secret_code[n]
+	def get_feedback(guess)
+		secret_copy = @secret_code.dup
+		guess_copy = guess.dup
+		feedback = []
+
+		(guess_copy.size - 1).downto(0) do |n|
+			if guess_copy[n] == secret_copy[n]
 				feedback << "X"
+				guess_copy.delete_at(n)
 				secret_copy.delete_at(n)
-			else
-				remaining << guess[n]
 			end
 		end
 
-		remaining.each do |digit|
-			secret_copy.size.downto(0) do |n|
-				if secret_copy[n] == digit
+		(guess_copy.size - 1).downto(0) do |x|
+			(secret_copy.size - 1).downto(0) do |y|
+				if guess_copy[x] == secret_copy[y]
 					feedback << "O"
-					secret_copy.delete_at(n)
+					guess_copy.delete_at(x)
+					secret_copy.delete_at(y)
 				end
 			end
 		end
@@ -145,7 +144,8 @@ class Board
 			feedback = ["nothing"]
 		end
 		feedback.join
-	end
+
+	end	
 
 
 end

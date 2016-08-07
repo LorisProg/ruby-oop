@@ -1,5 +1,6 @@
-require './player'
-require './board'
+require './player.rb'
+require './board.rb'
+#require './board2.rb' ##debug
 
 class MastermindGame
 

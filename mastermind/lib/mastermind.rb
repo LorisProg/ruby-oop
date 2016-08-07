@@ -18,7 +18,8 @@ def start
 		play
 	end
 
-	puts "Thanks you for playing Mastermind ! Hope you liked it !"
+	puts "Thanks you for playing ! Hope you liked it !"
+	puts ""
 end
 
 

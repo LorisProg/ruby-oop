@@ -13,9 +13,10 @@ class MastermindGame
 def start
 	
 	welcome
+	instructions
 	if play?
 		puts "Ok let's start !"
-		@board = Board.new
+		@board = Board.new(self)
 		@player = create_player
 		@board.play(generate_code)
 	end
@@ -23,34 +24,40 @@ def start
 
 end
 
+#private
+
 def welcome
-	puts " --------------------------------------------------"
-	puts "|                                                  |"
-	puts "| Welcome to the Mastermind game written in Ruby ! |"
-	puts "|                                                  |"
-	puts "|                                                  |"
-	puts "|           Made for The Odin Project              |"
-	puts "|                                                  |"
-	puts "|                                                  |"
-	puts " --------------------------------------------------"
+	puts "   --------------------------------------------------"
+	puts "  |                                                  |"
+	puts "  | Welcome to the Mastermind game written in Ruby ! |"
+	puts "  |                                                  |"
+	puts "  |                                                  |"
+	puts "  |           Made for The Odin Project              |"
+	puts "  |                                                  |"
+	puts "  |                                                  |"
+	puts "   --------------------------------------------------"
 	puts ""
-	puts " --------------------------------------------------"
-	puts "|                                                  |"
-	puts "|  The aim of the game is to find the secret code  |"
-	puts "|          chosen by the other player.             |"
-	puts "|                                                  |"
-	puts "|     The combination is a suite of 4 digits       |"
-	puts "|    from 1 to 6, each digit can be used several   |"
-	puts "|                    times.                        |"
-	puts "|                                                  |"
-	puts "| After each guess, the codemaker gives a feedback |"
-	puts "|                                                  |"
-	puts "|      X for a correct digit at the right place    |"
-	puts "|   0 for a correct digit but not the right place  |"
-	puts "|    (and there's no indication of which digit)    |"
-	puts "|                                                  |"
-	puts " --------------------------------------------------"
+end
+
+def instructions
+	puts "   --------------------------------------------------"
+	puts "  |                                                  |"
+	puts "  |  The aim of the game is to find the secret code  |"
+	puts "  |          chosen by the other player.             |"
+	puts "  |                                                  |"
+	puts "  |     The combination is a suite of 4 digits       |"
+	puts "  |    from 1 to 6, each digit can be used several   |"
+	puts "  |                    times.                        |"
+	puts "  |                                                  |"
+	puts "  | After each guess, the codemaker gives a feedback |"
+	puts "  |                                                  |"
+	puts "  |      X for a correct digit at the right place    |"
+	puts "  |   O for a correct digit but not the right place  |"
+	puts "  |    (and there's no indication of which digit)    |"
+	puts "  |                                                  |"
+	puts "   --------------------------------------------------"
 	puts ""
+
 end
 
 def play?
@@ -81,13 +88,9 @@ end
 def generate_code
 	code = []
 	@@combination_size.times do |n|
-		code[n] = random_digit		
+		code[n] = rand(1..6)		
 	end
 	code
-end
-
-def random_digit
-	rand(1..6)
 end
 
 

@@ -18,8 +18,9 @@ class Board
 		draw
 		get_guess
 		end
-		
 	end
+
+	private
 
 	def draw(show=false)
 		system ('clear')
@@ -37,7 +38,7 @@ class Board
 		puts "      You have #{@guess_left} guesses left"
 
 #		puts "Debug :"
-#		puts "Secret Code = #{@secret_code}"
+#		puts "Secret Code = #{@secret_code}"  ## for debug only
 
 		
 		if @all_guesses.size > 0
@@ -51,6 +52,7 @@ class Board
 			puts "      || . || . || . || . ||"
 		end
 
+		puts ""
 
 	end
 
@@ -61,7 +63,6 @@ class Board
 		guess = to_code(guess)
 
 		if valid_code?(guess)
-			puts "Your code is valid"
 			@current_guess = guess
 			@all_guesses << guess
 			@guess_left -= 1
@@ -102,18 +103,20 @@ class Board
 	end
 
 	def game_over?
+
+		if @current_guess == @secret_code
+			draw(true)
+			puts "Congratulations you won !"
+			return true 
+		end
+
 		if @guess_left == 0
 			draw(true)
 			puts "Game Over"
 			return true 
 		end
 
-		if @current_guess == @secret_code
-			draw(true)
-			puts "Congratulations you won !"
-			return true 
 		false
-		end
 	end
 
 

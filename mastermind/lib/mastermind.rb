@@ -15,17 +15,15 @@ def start
 	
 	welcome
 	instructions
-	if play?
+	if ready_play?
 		puts "Ok let's start !"
-		@board = Board.new(self)
-		@player = create_player
-		@board.play(generate_code)
+#		@player = create_player
+		play
 	end
 
-
+	puts "Thanks you for playing with us !"
 end
 
-#private
 
 def welcome
 	puts "   --------------------------------------------------"
@@ -61,12 +59,14 @@ def instructions
 
 end
 
-def play?
-	puts "Are you ready to play ? (y/n)"
-	yes_no?
+private
+
+def ready_play?
+	yes_no?("Are you ready to play ? (y/n)")
 end
 
-def yes_no?(error_message = "Please only answer with (y)es or (n)o :")
+def yes_no?(question)
+	puts question
 	correct_answer = false
 	until correct_answer
 		answer = gets.chomp
@@ -75,7 +75,7 @@ def yes_no?(error_message = "Please only answer with (y)es or (n)o :")
 		elsif answer == "n" || answer == "no"
 			return false
 		else
-			puts error_message
+			puts "Please only answer with (y)es or (n)o :"
 		end
 	end
 end
@@ -94,5 +94,16 @@ def generate_code
 	code
 end
 
+def play
+	@board = Board.new(self)
+	@board.play(generate_code)
+	play if new_game?
+end
+
+def new_game?
+	puts ""
+	puts "-----------------------------------"
+	yes_no? "Would you like to play a new game ? (y/n)"
+end
 
 end

@@ -1,7 +1,8 @@
-#require "pry"
 require './mastermind'
 
 class Board
+
+	attr_writer :secret_code
 
 	def initialize(mastermind)
 		@guess_left = 12
@@ -10,17 +11,22 @@ class Board
 		@@possible_digits = (1..6).to_a
 		@secret_code = nil
 		@mastermind = mastermind
+		@guess_set = generate_pool
 	end
 
-	def play(secret_code)
+	def play(secret_code, ai=false)
 		@secret_code = secret_code
 		until game_over?
-		draw
-		get_guess
+			draw
+			if ai
+				computer_guess(get_feedback(@current_guess))
+			else
+				get_guess
+			end
 		end
 	end
 
-	private
+#	private
 
 	def draw(show=false)
 		system ('clear')
@@ -36,9 +42,6 @@ class Board
 		end
 		puts ""
 		puts "      You have #{@guess_left} guesses left"
-
-#		puts "Debug :"
-#		puts "Secret Code = #{@secret_code}"  ## for debug only
 
 		
 		if @all_guesses.size > 0
@@ -63,9 +66,7 @@ class Board
 		guess = to_code(guess)
 
 		if valid_code?(guess)
-			@current_guess = guess
-			@all_guesses << guess
-			@guess_left -= 1
+			validate_guess(guess)
 		else
 			puts ""
 			puts "------------------------------"
@@ -74,6 +75,12 @@ class Board
 			puts "Only digit between 1 and 6 authorized"
 			get_guess
 		end
+	end
+
+	def validate_guess(guess)
+		@current_guess = guess
+		@all_guesses << guess
+		@guess_left -= 1
 	end
 
 	def to_code(string)
@@ -120,8 +127,11 @@ class Board
 	end
 
 
-	def get_feedback(guess)
-		secret_copy = @secret_code.dup
+	def get_feedback(guess, secret_code=@secret_code)
+
+		return "" if guess == []
+
+		secret_copy = secret_code.dup
 		guess_copy = guess.dup
 		feedback = []
 
@@ -147,8 +157,42 @@ class Board
 			feedback = ["nothing"]
 		end
 		feedback.join
-
 	end	
 
+
+	def computer_guess(feedback)
+
+		if feedback == ""
+			validate_guess([1,1,2,2])
+		else
+
+			(@guess_set.size - 1).downto(0) do |n|
+				if get_feedback(@current_guess, @guess_set[n]) != feedback
+					@guess_set.delete_at(n)
+				end
+			end
+
+			puts "The computer has chosen his next guess. Press <enter> to let it play."
+			gets.chomp
+			validate_guess(@guess_set[0])
+		end
+
+	end
+
+	def generate_pool
+	pool = []
+
+	1.upto(6) do |a|
+		1.upto(6) do |b|
+			1.upto(6) do |c|
+				1.upto(6) do |d|
+					pool << [a, b, c, d]
+				end
+			end
+		end
+	end
+
+	pool
+	end
 
 end

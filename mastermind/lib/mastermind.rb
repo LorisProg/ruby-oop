@@ -1,6 +1,4 @@
-require './player.rb'
 require './board.rb'
-#require './board2.rb' ##debug
 
 class MastermindGame
 
@@ -17,7 +15,6 @@ def start
 	instructions
 	if ready_play?
 		puts "Ok let's start !"
-#		@player = create_player
 		play
 	end
 
@@ -80,10 +77,38 @@ def yes_no?(question)
 	end
 end
 
-def create_player
-	puts "what's your name ?"
-	name = gets.chomp
-	Player.new(name, @board)
+
+def play
+	@board = Board.new(self)
+
+	game_type = guesser_or_creator
+
+	if game_type == "guesser"
+		@board.play(generate_code)
+
+	elsif game_type == "creator"
+		puts "Please chose a code"
+		puts "(write the 4 digits next to each other like this : 6534 )"
+		correct_answer = false
+		until correct_answer
+			code = gets.chomp
+
+			code = @board.to_code(code)
+
+			if @board.valid_code?(code)
+				@board.play(code, true)
+				correct_answer = true
+			else
+				puts ""
+				puts "------------------------------"
+				puts "You did not enter a valid code"
+				puts "------------------------------"
+				puts "Only digit between 1 and 6 authorized"
+			end
+		end
+	end
+	
+	play if new_game?
 end
 
 def generate_code
@@ -94,16 +119,25 @@ def generate_code
 	code
 end
 
-def play
-	@board = Board.new(self)
-	@board.play(generate_code)
-	play if new_game?
-end
-
 def new_game?
 	puts ""
 	puts "-----------------------------------"
 	yes_no? "Would you like to play a new game ? (y/n)"
+end
+
+def guesser_or_creator
+	puts "Would you like to be the (g)uesser or (c)reator of the code ?"
+	correct_answer = false
+	until correct_answer
+		answer = gets.chomp
+		if answer == "g" || answer == "guesser"
+			return "guesser"
+		elsif answer == "c" || answer == "creator"
+			return "creator"
+		else
+			puts "Please only answer with (g)uesser or (c)reator :"
+		end
+	end
 end
 
 end
